@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fraud Job Detector — 01 · Paste Message</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --card-border-hover: #cbd5e1;
+      --text-main: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+
+      --brand: #0d9488;
+      --brand-hover: #0f766e;
+      --brand-active: #115e59;
+      --brand-light: #f0fdfa;
+      --brand-border: #99f6e4;
+      --brand-glow: rgba(13, 148, 136, 0.18);
+
+      --emerald-bg: #ecfdf5;
+      --emerald-text: #065f46;
+      --emerald-border: #a7f3d0;
+      --emerald-dot: #10b981;
+
+      --amber-bg: #fffbeb;
+      --amber-text: #92400e;
+      --amber-border: #fde68a;
+      --amber-dot: #f59e0b;
+
+      --rose-bg: #fff1f2;
+      --rose-text: #9f1239;
+      --rose-border: #fecdd3;
+      --rose-dot: #f43f5e;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --shadow-subtle: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
+      --shadow-card: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.03);
+      --shadow-elevated: 0 16px 32px -8px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+      --shadow-btn: 0 4px 14px rgba(13, 148, 136, 0.25);
+
+      --font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Sticky Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    }
+
+    .navbar-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--brand) 0%, #0f766e 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1rem;
+      box-shadow: 0 2px 8px rgba(13, 148, 136, 0.3);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-link {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .nav-link:hover {
+      color: var(--brand);
+    }
+
+    .nav-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: var(--emerald-bg);
+      border: 1px solid var(--emerald-border);
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--emerald-text);
+    }
+
+    .nav-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--emerald-dot);
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+    }
+
+    /* Hero Header */
+    .hero {
+      background: #ffffff;
+      border-bottom: 1px solid var(--card-border);
+      padding: 44px 20px 36px;
+      text-align: center;
+    }
+
+    .hero-container {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px 5px 6px;
+      background: var(--brand-light);
+      border: 1px solid var(--brand-border);
+      border-radius: 9999px;
+      color: var(--brand-active);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-decoration: none;
+      margin-bottom: 18px;
+    }
+
+    .hero-pill-badge {
+      background: var(--brand);
+      color: #ffffff;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .hero h1 {
+      font-size: 2.35rem;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.2;
+      color: var(--text-main);
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      max-width: 660px;
+      margin: 0 auto 22px;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .hero-badge-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-badge-icon {
+      color: var(--brand);
+      font-weight: 800;
+    }
+
+    /* Workspace */
+    .main-section {
+      flex: 1;
+      padding: 36px 20px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .workspace-container {
+      width: 100%;
+      max-width: 780px;
+    }
+
+    /* 3-Step Navigation Stepper */
+    .stepper {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .step-card {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-decoration: none;
+      box-shadow: var(--shadow-subtle);
+      transition: all 0.15s ease;
+    }
+
+    .step-card:hover {
+      border-color: var(--card-border-hover);
+    }
+
+    .step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: #f1f5f9;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+    }
+
+    .step-card.active {
+      border-color: var(--brand);
+      background: var(--brand-light);
+      color: var(--brand-active);
+      box-shadow: 0 0 0 1px var(--brand);
+    }
+
+    .step-card.active .step-num {
+      background: var(--brand);
+      color: #ffffff;
+    }
+
+    .step-card.completed {
+      border-color: var(--emerald-border);
+      color: var(--emerald-text);
+      background: #f0fdf4;
+    }
+
+    .step-card.completed .step-num {
+      background: var(--emerald-dot);
+      color: #ffffff;
+    }
+
+    /* Card Box */
+    .app-card {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      box-shadow: var(--shadow-elevated);
+      margin-bottom: 24px;
+    }
+
+    .card-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .card-heading {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-subheading {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 22px;
+      line-height: 1.5;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-main);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 14px 16px;
+      background: #fdfdfd;
+      border: 1px solid #cbd5e1;
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      font-size: 0.94rem;
+      font-family: inherit;
+      line-height: 1.6;
+      transition: all 0.15s ease;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+      min-height: 220px;
+      resize: vertical;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px var(--brand-glow);
+      background: #ffffff;
+    }
+
+    /* Instruction callout */
+    .instruction-callout {
+      background: #f8fafc;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: 22px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      line-height: 1.5;
+    }
+
+    .instruction-icon {
+      font-size: 1.1rem;
+      color: var(--brand);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Buttons */
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .btn-primary {
+      flex: 1;
+      background: var(--brand);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 14px 24px;
+      font-size: 0.96rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: var(--shadow-btn);
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--brand-hover);
+      box-shadow: 0 6px 20px rgba(13, 148, 136, 0.32);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--text-secondary);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: var(--shadow-subtle);
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-secondary:hover {
+      background: #f8fafc;
+      color: var(--text-main);
+      border-color: #cbd5e1;
+    }
+
+    /* Alerts */
+    .alert-error {
+      background: #fff1f2;
+      border: 1px solid #fecdd3;
+      color: #9f1239;
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      display: none;
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.6s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--card-border);
+    }
+
+    @media (max-width: 640px) {
+      .stepper {
+        grid-template-columns: 1fr;
+      }
+      .hero h1 {
+        font-size: 1.85rem;
+      }
+      .app-card {
+        padding: 22px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <header class="navbar">
+    <div class="navbar-inner">
+      <a href="/paste" class="logo">
+        <div class="logo-icon">🛡️</div>
+        <span>FraudJobDetector</span>
+      </a>
+      <div class="nav-links">
+        <div class="nav-badge">
+          <span class="nav-badge-dot"></span>
+          <span>Registries Live</span>
+        </div>
+        <a href="/docs" target="_blank" class="nav-link">API Docs</a>
+        <a href="/health" target="_blank" class="nav-link">Health</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="hero">
+    <div class="hero-container">
+      <div class="hero-pill">
+        <span class="hero-pill-badge">Stage 01</span>
+        <span>Corporate Identity & Recruitment Due Diligence</span>
+      </div>
+      <h1>Paste Job Offer or Communication</h1>
+      <p>Submit unedited job postings, offer letters, recruitment emails, or WhatsApp messages. Our automated entity parser extracts employer names, web domains, and tax identifiers for live registry cross-examination.</p>
+
+      <div class="hero-badges">
+        <span class="hero-badge-item">
+          <span class="hero-badge-icon">✓</span> Ministry of Corporate Affairs (MCA)
+        </span>
+        <span class="hero-badge-item">
+          <span class="hero-badge-icon">✓</span> GSTIN Taxpayer Verification
+        </span>
+        <span class="hero-badge-item">
+          <span class="hero-badge-icon">✓</span> ICANN Domain Age & SSL
+        </span>
+        <span class="hero-badge-item">
+          <span class="hero-badge-icon">✓</span> Udyam MSME Registry
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Section -->
+  <main class="main-section">
+    <div class="workspace-container">
+
+      <!-- 3-Step Navigation Stepper -->
+      <nav class="stepper" aria-label="Workflow progress">
+        <a href="/paste" class="step-card active">
+          <span class="step-num">01</span>
+          <span>1. Paste Message</span>
+        </a>
+        <a href="/review" class="step-card" id="stepLinkReview">
+          <span class="step-num">02</span>
+          <span>2. Review Entities</span>
+        </a>
+        <a href="/risk-management" class="step-card" id="stepLinkRisk">
+          <span class="step-num">03</span>
+          <span>3. Risk Management</span>
+        </a>
+      </nav>
+
+      <!-- Error Toast -->
+      <div id="errorAlert" class="alert-error" role="alert"></div>
+
+      <!-- Input Card -->
+      <div class="app-card">
+        <div class="card-header-bar">
+          <h2 class="card-heading">
+            <span>📄 Recruitment Communication Input</span>
+          </h2>
+          <span class="nav-badge" style="background: var(--brand-light); color: var(--brand-active); border-color: var(--brand-border);">
+            Step 1 of 3
+          </span>
+        </div>
+        <p class="card-subheading">
+          Paste the unedited text received from the recruiter, employment agency, or job listing.
+        </p>
+
+        <div class="instruction-callout">
+          <span class="instruction-icon">ℹ️</span>
+          <div>
+            <strong>Guidance:</strong> The natural language entity extractor automatically identifies company names, web domains, recruiter emails, phone numbers, quoted salaries, GSTINs, and CIN numbers.
+          </div>
+        </div>
+
+        <form id="extractForm">
+          <div class="form-group">
+            <label class="form-label" for="rawMessageText">
+              <span>Job Offer / Message Text</span>
+              <span style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted);" id="charCount">0 characters</span>
+            </label>
+            <textarea
+              id="rawMessageText"
+              class="form-control"
+              placeholder="Paste the full job offer email, recruitment message, or letter here for automated entity extraction and verification..."
+              required
+            ></textarea>
+          </div>
+
+          <div class="btn-row">
+            <button type="button" class="btn-secondary" id="clearBtn" onclick="clearInput()">
+              Clear Text
+            </button>
+            <button type="submit" id="extractBtn" class="btn-primary">
+              <span class="spinner" id="extractSpinner"></span>
+              <span id="extractBtnText">Extract Entities & Proceed →</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        © 2026 Fraud Job Detector • Calibrated against Ministry of Corporate Affairs (MCA), Goods & Services Tax (GSTIN), Udyam MSME & ICANN WHOIS registries.
+      </footer>
+    </div>
+  </main>
+
+  <script>
+    const EXTRACT_ENDPOINT = "/extract-entities";
+
+    const textarea = document.getElementById("rawMessageText");
+    const charCount = document.getElementById("charCount");
+
+    // Load any existing draft from sessionStorage
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedRaw = sessionStorage.getItem("fjd_raw_message");
+      if (savedRaw) {
+        textarea.value = savedRaw;
+        updateCharCount();
+      }
+
+      // Check if step 2 or 3 are available in session
+      if (sessionStorage.getItem("fjd_extracted_entities")) {
+        const reviewLink = document.getElementById("stepLinkReview");
+        reviewLink.style.opacity = "1";
+      }
+      if (sessionStorage.getItem("fjd_risk_results")) {
+        const riskLink = document.getElementById("stepLinkRisk");
+        riskLink.style.opacity = "1";
+      }
+    });
+
+    textarea.addEventListener("input", updateCharCount);
+
+    function updateCharCount() {
+      charCount.textContent = `${textarea.value.length} characters`;
+    }
+
+    function clearInput() {
+      textarea.value = "";
+      updateCharCount();
+      sessionStorage.removeItem("fjd_raw_message");
+      sessionStorage.removeItem("fjd_extracted_entities");
+      hideError();
+    }
+
+    function showError(message) {
+      const alertBox = document.getElementById("errorAlert");
+      alertBox.textContent = message;
+      alertBox.style.display = "block";
+      alertBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    function hideError() {
+      const alertBox = document.getElementById("errorAlert");
+      alertBox.style.display = "none";
+      alertBox.textContent = "";
+    }
+
+    function setLoading(isLoading) {
+      const btn = document.getElementById("extractBtn");
+      const spinner = document.getElementById("extractSpinner");
+      const text = document.getElementById("extractBtnText");
+      if (isLoading) {
+        btn.disabled = true;
+        spinner.style.display = "inline-block";
+        text.textContent = "Extracting Entities...";
+      } else {
+        btn.disabled = false;
+        spinner.style.display = "none";
+        text.textContent = "Extract Entities & Proceed →";
+      }
+    }
+
+    document.getElementById("extractForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      hideError();
+
+      const rawText = textarea.value.trim();
+      if (!rawText) {
+        showError("Please paste a job offer message or email text before continuing.");
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        const response = await fetch(EXTRACT_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: rawText }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Server returned HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Save raw text and extracted entities into sessionStorage
+        sessionStorage.setItem("fjd_raw_message", rawText);
+        sessionStorage.setItem("fjd_extracted_entities", JSON.stringify(data));
+
+        // Seamlessly navigate to Page 2: Review Entities
+        window.location.href = "/review";
+
+      } catch (err) {
+        console.error("Extract error:", err);
+        showError("Failed to extract entities from message. Please ensure the backend server is reachable.");
+      } finally {
+        setLoading(false);
+      }
+    });
+  </script>
+</body>
+</html>

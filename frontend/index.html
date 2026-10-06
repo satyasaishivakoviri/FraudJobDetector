@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FraudJobDetector — Verify a Job Opportunity</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --card-border-focus: #0d9488;
+      --text-main: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+
+      --brand: #0d9488;
+      --brand-hover: #0f766e;
+      --brand-active: #115e59;
+      --brand-light: #f0fdfa;
+      --brand-glow: rgba(13, 148, 136, 0.15);
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+      --shadow-card: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.03);
+
+      --font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Header */
+    .header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--card-border);
+      padding: 16px 24px;
+    }
+
+    .header-inner {
+      max-width: 840px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      background: var(--brand);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .brand-subtitle {
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    /* Main Container */
+    .main-wrapper {
+      flex: 1;
+      padding: 40px 20px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .content-container {
+      width: 100%;
+      max-width: 820px;
+    }
+
+    /* Unified Heading Area */
+    .hero-heading-area {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .hero-heading-area h1 {
+      font-size: 2.1rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .hero-heading-area p {
+      font-size: 0.98rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    /* Mode Switcher Tabs */
+    .tabs-wrapper {
+      display: flex;
+      background: #f1f5f9;
+      padding: 5px;
+      border-radius: var(--radius-md);
+      margin-bottom: 20px;
+      border: 1px solid var(--card-border);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+    }
+
+    .tab-btn.active {
+      background: #ffffff;
+      color: var(--brand);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Single Input Card */
+    .input-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .input-card-header {
+      margin-bottom: 18px;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .card-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+
+    /* Tab Panels */
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    /* Textarea & Counter */
+    .textarea-wrapper {
+      position: relative;
+      margin-bottom: 14px;
+    }
+
+    .message-textarea {
+      width: 100%;
+      min-height: 220px;
+      padding: 16px;
+      font-family: inherit;
+      font-size: 0.94rem;
+      color: var(--text-main);
+      line-height: 1.6;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: var(--radius-md);
+      resize: vertical;
+      transition: all 0.15s ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .message-textarea:focus {
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px var(--brand-glow);
+    }
+
+    .textarea-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .char-counter {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    /* Supported Types Row */
+    .supported-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .supported-bullet {
+      color: var(--text-light);
+      font-size: 0.7rem;
+    }
+
+    /* Dropzones */
+    .dropzone-container {
+      border: 2px dashed #cbd5e1;
+      border-radius: var(--radius-md);
+      background: #f8fafc;
+      padding: 36px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .dropzone-container:hover, .dropzone-container.dragover {
+      border-color: var(--brand);
+      background: var(--brand-light);
+    }
+
+    .dropzone-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 12px;
+      color: var(--brand);
+      background: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .dropzone-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .dropzone-subtitle {
+      font-size: 0.86rem;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .btn-choose-file {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.15s;
+    }
+
+    .btn-choose-file:hover {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+    }
+
+    .dropzone-meta {
+      margin-top: 12px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .file-selected-badge {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      background: #f0fdfa;
+      border: 1px solid #99f6e4;
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      margin-bottom: 18px;
+    }
+
+    .file-selected-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .file-selected-name {
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: #0f766e;
+    }
+
+    .file-selected-size {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .btn-remove-file {
+      background: transparent;
+      border: none;
+      color: #ef4444;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 4px 8px;
+    }
+
+    /* Privacy Message Notice */
+    .privacy-notice-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 22px;
+    }
+
+    .privacy-notice-icon {
+      color: var(--brand);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Primary Action */
+    .action-row {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .btn-analyze {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--brand);
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-family: inherit;
+      padding: 13px 28px;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 8px rgba(13, 148, 136, 0.25);
+    }
+
+    .btn-analyze:hover:not(:disabled) {
+      background: var(--brand-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-analyze:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .btn-analyze:disabled {
+      background: #cbd5e1;
+      color: #94a3b8;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* Loading Spinner */
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #ffffff;
+      animation: spin 0.6s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Error Toast */
+    .alert-error {
+      background: #fff1f2;
+      border: 1px solid #fecdd3;
+      color: #9f1239;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      padding: 24px;
+      border-top: 1px solid var(--card-border);
+      background: #ffffff;
+    }
+
+    @media (max-width: 640px) {
+      .hero-heading-area h1 {
+        font-size: 1.75rem;
+      }
+      .input-card {
+        padding: 20px 16px;
+      }
+      .tabs-wrapper {
+        flex-direction: column;
+      }
+      .btn-analyze {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="/" class="brand">
+        <div class="brand-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">FraudJobDetector</span>
+          <span class="brand-subtitle">Corporate Due Diligence & Scam Shield</span>
+        </div>
+      </a>
+    </div>
+  </header>
+
+  <!-- Screen 1: Submission -->
+  <main class="main-wrapper">
+    <div class="content-container">
+
+      <div class="hero-heading-area">
+        <h1>Verify a Job Opportunity</h1>
+        <p>Analyze messages, offer letters, and recruitment screenshots.</p>
+      </div>
+
+      <!-- Error Alert -->
+      <div id="errorAlert" class="alert-error" role="alert"></div>
+
+      <!-- Input Mode Switcher Tabs -->
+      <div class="tabs-wrapper" role="tablist">
+        <button type="button" class="tab-btn active" id="tabBtnMessage" onclick="switchTab('message')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          Analyze Job Message
+        </button>
+        <button type="button" class="tab-btn" id="tabBtnOffer" onclick="switchTab('offer')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+          Upload Offer Letter
+        </button>
+        <button type="button" class="tab-btn" id="tabBtnScreenshot" onclick="switchTab('screenshot')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+          Analyze Screenshot
+        </button>
+      </div>
+
+      <!-- Input Card -->
+      <div class="input-card">
+
+        <!-- TAB 1: Job Message -->
+        <div id="panelMessage" class="tab-panel active">
+          <div class="input-card-header">
+            <h2 class="card-title">Job Communication</h2>
+            <p class="card-desc">Paste the job offer, email, WhatsApp, or LinkedIn recruitment text exactly as received.</p>
+          </div>
+
+          <form id="submissionForm" onsubmit="handleMessageSubmit(event)">
+            <div class="textarea-wrapper">
+              <textarea
+                id="rawTextarea"
+                class="message-textarea"
+                maxlength="10000"
+                placeholder="Paste your job offer, WhatsApp message, or recruitment email here..."
+                required
+              ></textarea>
+            </div>
+
+            <div class="textarea-meta">
+              <div class="supported-row">
+                <span>Email</span>
+                <span class="supported-bullet">•</span>
+                <span>WhatsApp</span>
+                <span class="supported-bullet">•</span>
+                <span>LinkedIn</span>
+                <span class="supported-bullet">•</span>
+                <span>Telegram</span>
+              </div>
+              <div class="char-counter" id="charCounter">0 / 10,000 characters</div>
+            </div>
+
+            <div class="privacy-notice-box">
+              <svg class="privacy-notice-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <span>Uploaded documents and screenshots may contain personal information. Review the content before uploading and avoid sharing unnecessary sensitive data.</span>
+            </div>
+
+            <div class="action-row">
+              <button type="submit" id="analyzeMessageBtn" class="btn-analyze" disabled>
+                <span class="spinner" id="analyzeMessageSpinner"></span>
+                <span id="analyzeMessageBtnText">Analyze Message →</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- TAB 2: Upload Offer Letter -->
+        <div id="panelOffer" class="tab-panel">
+          <div class="input-card-header">
+            <h2 class="card-title">Upload Offer Letter</h2>
+            <p class="card-desc">Submit your formal offer letter or appointment documentation for statutory cross-referencing.</p>
+          </div>
+
+          <div
+            class="dropzone-container"
+            id="offerDropzone"
+            onclick="document.getElementById('offerFileInput').click()"
+            ondragover="handleDragOver(event)"
+            ondragleave="handleDragLeave(event)"
+            ondrop="handleOfferDrop(event)"
+          >
+            <div class="dropzone-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+            </div>
+            <div class="dropzone-title">Drag & drop your offer letter here</div>
+            <div class="dropzone-subtitle">or</div>
+            <button type="button" class="btn-choose-file" onclick="event.stopPropagation(); document.getElementById('offerFileInput').click()">
+              Choose File
+            </button>
+            <div class="dropzone-meta">Supported: PDF, DOCX, JPG, JPEG, PNG (Max 10 MB)</div>
+            <input
+              type="file"
+              id="offerFileInput"
+              style="display: none;"
+              accept=".pdf,.docx,.jpg,.jpeg,.png,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png"
+              onchange="handleOfferFileSelect(this.files)"
+            />
+          </div>
+
+          <!-- File Selected Badge -->
+          <div class="file-selected-badge" id="offerFileBadge">
+            <div class="file-selected-info">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              </svg>
+              <div>
+                <div class="file-selected-name" id="offerFileName">filename.pdf</div>
+                <div class="file-selected-size" id="offerFileSize">0 KB</div>
+              </div>
+            </div>
+            <button type="button" class="btn-remove-file" onclick="clearOfferFile()">Remove ✕</button>
+          </div>
+
+          <div class="privacy-notice-box">
+            <svg class="privacy-notice-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <span>Uploaded documents and screenshots may contain personal information. Review the content before uploading and avoid sharing unnecessary sensitive data.</span>
+          </div>
+
+          <div class="action-row">
+            <button type="button" id="analyzeOfferBtn" class="btn-analyze" disabled onclick="uploadAndAnalyzeOffer()">
+              <span class="spinner" id="analyzeOfferSpinner"></span>
+              <span id="analyzeOfferBtnText">Analyze Offer Letter →</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- TAB 3: Analyze Screenshot -->
+        <div id="panelScreenshot" class="tab-panel">
+          <div class="input-card-header">
+            <h2 class="card-title">Analyze Screenshot</h2>
+            <p class="card-desc">Upload a WhatsApp, LinkedIn, Telegram, or Email screenshot for OCR text and scam pattern analysis.</p>
+          </div>
+
+          <div
+            class="dropzone-container"
+            id="screenshotDropzone"
+            onclick="document.getElementById('screenshotFileInput').click()"
+            ondragover="handleDragOver(event)"
+            ondragleave="handleDragLeave(event)"
+            ondrop="handleScreenshotDrop(event)"
+          >
+            <div class="dropzone-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+              </svg>
+            </div>
+            <div class="dropzone-title">Drag & drop recruitment screenshot here</div>
+            <div class="dropzone-subtitle">or</div>
+            <button type="button" class="btn-choose-file" onclick="event.stopPropagation(); document.getElementById('screenshotFileInput').click()">
+              Choose File
+            </button>
+            <div class="dropzone-meta">Supported: PNG, JPG, JPEG, WEBP (Max 10 MB)</div>
+            <input
+              type="file"
+              id="screenshotFileInput"
+              style="display: none;"
+              accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp"
+              onchange="handleScreenshotFileSelect(this.files)"
+            />
+          </div>
+
+          <!-- Screenshot Selected Badge -->
+          <div class="file-selected-badge" id="screenshotFileBadge">
+            <div class="file-selected-info">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              </svg>
+              <div>
+                <div class="file-selected-name" id="screenshotFileName">screenshot.png</div>
+                <div class="file-selected-size" id="screenshotFileSize">0 KB</div>
+              </div>
+            </div>
+            <button type="button" class="btn-remove-file" onclick="clearScreenshotFile()">Remove ✕</button>
+          </div>
+
+          <div class="privacy-notice-box">
+            <svg class="privacy-notice-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <span>Uploaded documents and screenshots may contain personal information. Review the content before uploading and avoid sharing unnecessary sensitive data.</span>
+          </div>
+
+          <div class="action-row">
+            <button type="button" id="analyzeScreenshotBtn" class="btn-analyze" disabled onclick="uploadAndAnalyzeScreenshot()">
+              <span class="spinner" id="analyzeScreenshotSpinner"></span>
+              <span id="analyzeScreenshotBtnText">Analyze Screenshot →</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    FraudJobDetector • Independent Corporate Identity & Recruitment Due Diligence Engine
+  </footer>
+
+  <script>
+    const EXTRACT_URL = "/extract-entities";
+    const UPLOAD_OFFER_URL = "/upload/offer-letter";
+    const UPLOAD_SCREENSHOT_URL = "/upload/screenshot";
+
+    let selectedOfferFile = null;
+    let selectedScreenshotFile = null;
+
+    const textarea = document.getElementById("rawTextarea");
+    const charCounter = document.getElementById("charCounter");
+    const analyzeMessageBtn = document.getElementById("analyzeMessageBtn");
+    const analyzeMessageSpinner = document.getElementById("analyzeMessageSpinner");
+    const analyzeMessageBtnText = document.getElementById("analyzeMessageBtnText");
+    const errorAlert = document.getElementById("errorAlert");
+
+    // Restore draft if returning from Screen 2
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedInputSource = sessionStorage.getItem("fjd_input_source") || "message";
+      if (savedInputSource === "offer_letter") {
+        switchTab("offer");
+      } else if (savedInputSource === "screenshot") {
+        switchTab("screenshot");
+      } else {
+        const savedMessage = sessionStorage.getItem("fjd_raw_message");
+        if (savedMessage) {
+          textarea.value = savedMessage;
+          updateMessageState();
+        }
+      }
+    });
+
+    function switchTab(tab) {
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+      document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+      hideError();
+
+      if (tab === "message") {
+        document.getElementById("tabBtnMessage").classList.add("active");
+        document.getElementById("panelMessage").classList.add("active");
+      } else if (tab === "offer") {
+        document.getElementById("tabBtnOffer").classList.add("active");
+        document.getElementById("panelOffer").classList.add("active");
+      } else if (tab === "screenshot") {
+        document.getElementById("tabBtnScreenshot").classList.add("active");
+        document.getElementById("panelScreenshot").classList.add("active");
+      }
+    }
+
+    // Message Input Handlers
+    textarea.addEventListener("input", updateMessageState);
+
+    function updateMessageState() {
+      const len = textarea.value.length;
+      charCounter.textContent = `${len.toLocaleString()} / 10,000 characters`;
+      analyzeMessageBtn.disabled = len < 5;
+    }
+
+    async function handleMessageSubmit(e) {
+      e.preventDefault();
+      const text = textarea.value.trim();
+      if (text.length < 5) return;
+
+      hideError();
+      setMessageLoading(true);
+
+      try {
+        const res = await fetch(EXTRACT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text }),
+        });
+
+        if (!res.ok) {
+          throw new Error(`Server returned status ${res.status}`);
+        }
+
+        const data = await res.json();
+        sessionStorage.setItem("fjd_raw_message", text);
+        sessionStorage.setItem("fjd_extracted_entities", JSON.stringify(data));
+        sessionStorage.setItem("fjd_input_source", "message");
+        sessionStorage.removeItem("fjd_screenshot_preview");
+        sessionStorage.removeItem("fjd_offer_letter_data");
+        sessionStorage.removeItem("fjd_screenshot_signals");
+        sessionStorage.removeItem("fjd_ocr_confidence");
+
+        window.location.href = "/review";
+      } catch (err) {
+        showError("Could not extract entities: " + (err.message || "Network error."));
+        setMessageLoading(false);
+      }
+    }
+
+    function setMessageLoading(loading) {
+      analyzeMessageBtn.disabled = loading;
+      textarea.disabled = loading;
+      analyzeMessageSpinner.style.display = loading ? "inline-block" : "none";
+      analyzeMessageBtnText.textContent = loading ? "Analyzing..." : "Analyze Message →";
+    }
+
+    // Drag and Drop Helpers
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.currentTarget.classList.add("dragover");
+    }
+
+    function handleDragLeave(e) {
+      e.preventDefault();
+      e.currentTarget.classList.remove("dragover");
+    }
+
+    // Offer Letter File Handling
+    function handleOfferDrop(e) {
+      e.preventDefault();
+      e.currentTarget.classList.remove("dragover");
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        handleOfferFileSelect(e.dataTransfer.files);
+      }
+    }
+
+    function handleOfferFileSelect(files) {
+      if (!files || files.length === 0) return;
+      const file = files[0];
+      const ext = file.name.split('.').pop().toLowerCase();
+      const allowed = ['pdf', 'docx', 'jpg', 'jpeg', 'png'];
+      if (!allowed.includes(ext)) {
+        showError(`Unsupported file format '.${ext}'. Supported formats: PDF, DOCX, JPG, JPEG, PNG.`);
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        showError("File size exceeds 10 MB limit.");
+        return;
+      }
+
+      hideError();
+      selectedOfferFile = file;
+      document.getElementById("offerFileName").textContent = file.name;
+      document.getElementById("offerFileSize").textContent = formatBytes(file.size);
+      document.getElementById("offerFileBadge").style.display = "flex";
+      document.getElementById("analyzeOfferBtn").disabled = false;
+    }
+
+    function clearOfferFile() {
+      selectedOfferFile = null;
+      document.getElementById("offerFileInput").value = "";
+      document.getElementById("offerFileBadge").style.display = "none";
+      document.getElementById("analyzeOfferBtn").disabled = true;
+    }
+
+    async function uploadAndAnalyzeOffer() {
+      if (!selectedOfferFile) return;
+      hideError();
+      setOfferLoading(true);
+
+      const formData = new FormData();
+      formData.append("file", selectedOfferFile);
+
+      try {
+        const res = await fetch(UPLOAD_OFFER_URL, {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.detail || `Upload failed with status ${res.status}`);
+        }
+
+        const data = await res.json();
+
+        sessionStorage.setItem("fjd_raw_message", data.raw_text || "");
+        sessionStorage.setItem("fjd_offer_letter_data", JSON.stringify(data.extracted_data || {}));
+        sessionStorage.setItem("fjd_extracted_entities", JSON.stringify(data.extracted_data || {}));
+        sessionStorage.setItem("fjd_input_source", "offer_letter");
+        sessionStorage.setItem("fjd_ocr_confidence", String(data.confidence || 0.95));
+        sessionStorage.setItem("fjd_has_sensitive_info", data.has_sensitive_info ? "true" : "false");
+        sessionStorage.removeItem("fjd_screenshot_preview");
+        sessionStorage.removeItem("fjd_screenshot_signals");
+
+        window.location.href = "/review";
+      } catch (err) {
+        showError("Offer letter analysis error: " + err.message);
+        setOfferLoading(false);
+      }
+    }
+
+    function setOfferLoading(loading) {
+      document.getElementById("analyzeOfferBtn").disabled = loading;
+      document.getElementById("analyzeOfferSpinner").style.display = loading ? "inline-block" : "none";
+      document.getElementById("analyzeOfferBtnText").textContent = loading ? "Analyzing Document..." : "Analyze Offer Letter →";
+    }
+
+    // Screenshot File Handling
+    function handleScreenshotDrop(e) {
+      e.preventDefault();
+      e.currentTarget.classList.remove("dragover");
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        handleScreenshotFileSelect(e.dataTransfer.files);
+      }
+    }
+
+    function handleScreenshotFileSelect(files) {
+      if (!files || files.length === 0) return;
+      const file = files[0];
+      const ext = file.name.split('.').pop().toLowerCase();
+      const allowed = ['png', 'jpg', 'jpeg', 'webp'];
+      if (!allowed.includes(ext)) {
+        showError(`Unsupported image format '.${ext}'. Supported formats: PNG, JPG, JPEG, WEBP.`);
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        showError("File size exceeds 10 MB limit.");
+        return;
+      }
+
+      hideError();
+      selectedScreenshotFile = file;
+      document.getElementById("screenshotFileName").textContent = file.name;
+      document.getElementById("screenshotFileSize").textContent = formatBytes(file.size);
+      document.getElementById("screenshotFileBadge").style.display = "flex";
+      document.getElementById("analyzeScreenshotBtn").disabled = false;
+    }
+
+    function clearScreenshotFile() {
+      selectedScreenshotFile = null;
+      document.getElementById("screenshotFileInput").value = "";
+      document.getElementById("screenshotFileBadge").style.display = "none";
+      document.getElementById("analyzeScreenshotBtn").disabled = true;
+    }
+
+    async function uploadAndAnalyzeScreenshot() {
+      if (!selectedScreenshotFile) return;
+      hideError();
+      setScreenshotLoading(true);
+
+      const formData = new FormData();
+      formData.append("file", selectedScreenshotFile);
+
+      try {
+        const res = await fetch(UPLOAD_SCREENSHOT_URL, {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.detail || `Upload failed with status ${res.status}`);
+        }
+
+        const data = await res.json();
+
+        sessionStorage.setItem("fjd_raw_message", data.raw_text || "");
+        sessionStorage.setItem("fjd_extracted_entities", JSON.stringify(data.extracted_entities || {}));
+        sessionStorage.setItem("fjd_input_source", "screenshot");
+        sessionStorage.setItem("fjd_screenshot_preview", data.image_preview_url || "");
+        sessionStorage.setItem("fjd_screenshot_signals", JSON.stringify(data.message_signals || []));
+        sessionStorage.setItem("fjd_ocr_confidence", String(data.confidence || 0.0));
+        sessionStorage.setItem("fjd_low_confidence", data.low_confidence ? "true" : "false");
+        sessionStorage.removeItem("fjd_offer_letter_data");
+
+        window.location.href = "/review";
+      } catch (err) {
+        showError("Screenshot OCR analysis error: " + err.message);
+        setScreenshotLoading(false);
+      }
+    }
+
+    function setScreenshotLoading(loading) {
+      document.getElementById("analyzeScreenshotBtn").disabled = loading;
+      document.getElementById("analyzeScreenshotSpinner").style.display = loading ? "inline-block" : "none";
+      document.getElementById("analyzeScreenshotBtnText").textContent = loading ? "Running OCR..." : "Analyze Screenshot →";
+    }
+
+    // Utilities
+    function formatBytes(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    }
+
+    function showError(msg) {
+      errorAlert.textContent = msg;
+      errorAlert.style.display = "block";
+      errorAlert.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    function hideError() {
+      errorAlert.style.display = "none";
+      errorAlert.textContent = "";
+    }
+  </script>
+</body>
+</html>

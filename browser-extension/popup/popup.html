@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fraud Job Detector</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="popup-container">
+    
+    <!-- Top Header -->
+    <header class="popup-header">
+      <div class="header-brand">
+        <div class="brand-shield">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">Fraud Job Detector</h1>
+          <p class="brand-subtitle">Enterprise Corporate Verification</p>
+        </div>
+      </div>
+      <div class="status-indicator">
+        <span class="status-dot"></span>
+        <span class="status-text">Ready</span>
+      </div>
+    </header>
+
+    <!-- Phase 1: Welcome & Trigger Screen -->
+    <section id="welcomeView" class="view-panel active">
+      <div class="welcome-box">
+        <div class="welcome-icon">🛡️</div>
+        <h2 class="welcome-heading">Inspect This Job Posting</h2>
+        <p class="welcome-desc">
+          Verify the employer on this webpage against official MCA, GST, Udyam, and domain registry databases.
+        </p>
+        <button type="button" id="btnInspectPage" class="btn-primary">
+          Verify this job
+        </button>
+      </div>
+    </section>
+
+    <!-- Phase 2: Review / Edit Extracted Job Data -->
+    <section id="reviewView" class="view-panel">
+      <div class="view-header">
+        <h2 class="section-heading">Extracted Details</h2>
+        <span class="badge-edit">Editable</span>
+      </div>
+      <p class="section-sub">Confirm or adjust extracted information before verifying:</p>
+
+      <form id="jobForm" class="job-form">
+        <div class="form-group">
+          <label for="inputCompanyName">Company Name *</label>
+          <input type="text" id="inputCompanyName" required placeholder="e.g. Infosys Limited" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label for="inputDomain">Claimed Domain</label>
+            <input type="text" id="inputDomain" placeholder="e.g. infosys.com" />
+          </div>
+          <div class="form-group flex-1">
+            <label for="inputJobTitle">Job Title</label>
+            <input type="text" id="inputJobTitle" placeholder="e.g. Software Engineer" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inputRecruiterEmail">Recruiter Email</label>
+          <input type="text" id="inputRecruiterEmail" placeholder="e.g. careers@company.com" />
+        </div>
+
+        <div class="form-group">
+          <label for="inputFeeInfo">Fee / Payment Demand (if any)</label>
+          <input type="text" id="inputFeeInfo" placeholder="e.g. Registration fee ₹999 requested" />
+        </div>
+
+        <div class="form-group">
+          <label for="inputDescription">Job Description Excerpt</label>
+          <textarea id="inputDescription" rows="3" placeholder="Job message or requirements..."></textarea>
+        </div>
+
+        <div class="button-group">
+          <button type="button" id="btnCancelReview" class="btn-secondary">Cancel</button>
+          <button type="submit" id="btnRunVerification" class="btn-primary flex-1">Run Verification</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Phase 3: Loading View -->
+    <section id="loadingView" class="view-panel">
+      <div class="loading-box">
+        <div class="spinner"></div>
+        <h3 class="loading-title">Cross-Referencing Registries</h3>
+        <p class="loading-desc">Checking MCA, GST, Udyam, Domain WHOIS & Risk Signals...</p>
+      </div>
+    </section>
+
+    <!-- Phase 4: Compact Verification Result -->
+    <section id="resultView" class="view-panel">
+      <div class="result-card">
+        <div class="result-header">
+          <div>
+            <span class="result-company-label">Investigated Entity</span>
+            <h2 id="resultCompanyName" class="result-company-name">Company Name</h2>
+          </div>
+          <div id="resultRiskBadge" class="result-risk-badge low">
+            <span id="resultRiskLevel">LOW RISK</span>
+          </div>
+        </div>
+
+        <div class="score-container">
+          <div class="score-left">
+            <span class="score-val" id="resultRiskScore">0</span>
+            <span class="score-unit">/ 100</span>
+          </div>
+          <div class="score-right" id="resultScoreMessage">
+            No critical scam signals detected.
+          </div>
+        </div>
+
+        <!-- Warning Signals -->
+        <div class="signals-block">
+          <h3 class="block-title">Warning Signals</h3>
+          <ul id="resultSignalsList" class="signals-list">
+            <!-- Rendered dynamically -->
+          </ul>
+        </div>
+
+        <!-- Safety Guidance -->
+        <div class="recs-block">
+          <h3 class="block-title">Safety Recommendations</h3>
+          <ul id="resultRecsList" class="recs-list">
+            <!-- Rendered dynamically -->
+          </ul>
+        </div>
+
+        <div class="result-actions">
+          <button type="button" id="btnOpenFullReport" class="btn-primary full-width">
+            Open Full Report ↗
+          </button>
+          <button type="button" id="btnEditAndRecheck" class="btn-link">
+            ← Edit Details
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="popup-footer">
+      <span>Connected to FraudJobDetector API (127.0.0.1:8000)</span>
+    </footer>
+
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,2250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FraudJobDetector — Verification Report</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --card-border-focus: #0d9488;
+      --text-main: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+
+      --brand: #0d9488;
+      --brand-hover: #0f766e;
+      --brand-active: #115e59;
+      --brand-light: #f0fdfa;
+
+      /* Risk Status Colors */
+      --risk-low: #16a34a;
+      --risk-low-bg: #f0fdf4;
+      --risk-low-border: #bbf7d0;
+
+      --risk-medium: #d97706;
+      --risk-medium-bg: #fffbeb;
+      --risk-medium-border: #fde68a;
+
+      --risk-high: #dc2626;
+      --risk-high-bg: #fef2f2;
+      --risk-high-border: #fecaca;
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+      --shadow-card: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.03);
+
+      --font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Header */
+    .header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--card-border);
+      padding: 16px 24px;
+    }
+
+    .header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      background: var(--brand);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .brand-subtitle {
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    /* Main Content */
+    .main-wrapper {
+      flex: 1;
+      padding: 40px 20px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .content-container {
+      width: 100%;
+      max-width: 860px;
+    }
+
+    /* Report Header */
+    .report-header {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .report-heading {
+      font-size: 1.9rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .report-subtitle {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+    }
+
+    .investigated-company-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.94rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* Company Identity Card */
+    .identity-card {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 24px;
+    }
+
+    .identity-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #f1f5f9;
+      margin-bottom: 18px;
+    }
+
+    .identity-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--brand);
+      margin-bottom: 4px;
+    }
+
+    .identity-company-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      line-height: 1.25;
+      word-break: break-word;
+    }
+
+    .identity-company-subtitle {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .identity-confidence-panel {
+      min-width: 250px;
+      background: #f8fafc;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .confidence-header-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    .confidence-label {
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .confidence-value {
+      font-size: 1.15rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: var(--brand);
+    }
+
+    .confidence-bar-track {
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+
+    .confidence-bar-fill {
+      height: 100%;
+      background: var(--brand);
+      border-radius: 9999px;
+      transition: width 0.4s ease;
+    }
+
+    .identity-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .identity-grid-item {
+      background: #f8fafc;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .identity-item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .identity-item-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .identity-main-val {
+      font-size: 0.94rem;
+      font-weight: 700;
+      color: var(--text-main);
+      word-break: break-word;
+    }
+
+    .identity-sub-val {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      margin-top: 3px;
+    }
+
+    /* Risk Panel Card */
+    .risk-panel {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .risk-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .risk-badge.low { background: var(--risk-low-bg); color: var(--risk-low); border: 1px solid var(--risk-low-border); }
+    .risk-badge.medium { background: var(--risk-medium-bg); color: var(--risk-medium); border: 1px solid var(--risk-medium-border); }
+    .risk-badge.high { background: var(--risk-high-bg); color: var(--risk-high); border: 1px solid var(--risk-high-border); }
+
+    .risk-summary-text {
+      font-size: 0.90rem;
+      color: var(--text-secondary);
+      max-width: 480px;
+      line-height: 1.5;
+    }
+
+    .risk-panel-right {
+      text-align: center;
+      padding: 14px 24px;
+      background: #f8fafc;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      min-width: 160px;
+    }
+
+    .score-number {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      font-family: var(--font-mono);
+    }
+
+    .score-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Section Headings */
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Risk Signals */
+    .signals-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .signal-card {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .signal-card.flagged {
+      border-left: 4px solid var(--risk-high);
+    }
+
+    .signal-card.clean {
+      border-left: 4px solid var(--risk-low);
+    }
+
+    .signal-score-badge {
+      font-size: 0.85rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      background: var(--risk-high-bg);
+      color: var(--risk-high);
+      border: 1px solid var(--risk-high-border);
+      white-space: nowrap;
+    }
+
+    .signal-content {
+      flex: 1;
+    }
+
+    .signal-title {
+      font-size: 0.94rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+
+    .signal-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* Verification Evidence */
+    .evidence-section {
+      margin-bottom: 30px;
+    }
+
+    .evidence-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .evidence-card {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .evidence-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .evidence-card-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .evidence-status-pill {
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .pill-green { background: var(--risk-low-bg); color: var(--risk-low); border: 1px solid var(--risk-low-border); }
+    .pill-amber { background: var(--risk-medium-bg); color: var(--risk-medium); border: 1px solid var(--risk-medium-border); }
+    .pill-red { background: var(--risk-high-bg); color: var(--risk-high); border: 1px solid var(--risk-high-border); }
+    .pill-neutral { background: #f1f5f9; color: var(--text-secondary); border: 1px solid #e2e8f0; }
+
+    .evidence-details-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px 16px;
+      margin-bottom: 12px;
+    }
+
+    .evidence-detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .evidence-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .evidence-value {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-main);
+      word-break: break-word;
+    }
+
+    .evidence-value-mono {
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+    }
+
+    .evidence-source-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 10px;
+      border-top: 1px solid #f1f5f9;
+      font-size: 0.80rem;
+    }
+
+    .evidence-source-name {
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .evidence-source-link {
+      color: var(--brand);
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .evidence-source-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Offer Letter Consistency Section */
+    .consistency-card {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 30px;
+    }
+
+    .consistency-card-header {
+      margin-bottom: 18px;
+    }
+
+    .consistency-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--brand);
+      margin-bottom: 4px;
+    }
+
+    .consistency-heading {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .consistency-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .consistency-table-wrapper {
+      overflow-x: auto;
+    }
+
+    .consistency-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      text-align: left;
+    }
+
+    .consistency-table th {
+      background: #f8fafc;
+      padding: 10px 14px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .consistency-table td {
+      padding: 14px;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: top;
+    }
+
+    .consistency-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .status-badge-match {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      background: #f0fdf4;
+      color: #16a34a;
+      border: 1px solid #bbf7d0;
+      white-space: nowrap;
+    }
+
+    .status-badge-mismatch {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      background: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fecaca;
+      white-space: nowrap;
+    }
+
+    .status-badge-unverified {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      background: #f8fafc;
+      color: #64748b;
+      border: 1px solid #cbd5e1;
+      white-space: nowrap;
+    }
+
+    .status-badge-not-detected {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      background: #f1f5f9;
+      color: #94a3b8;
+      border: 1px solid #e2e8f0;
+      white-space: nowrap;
+    }
+
+    .status-badge-extracted {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      background: #f0fdfa;
+      color: #0d9488;
+      border: 1px solid #99f6e4;
+      white-space: nowrap;
+    }
+
+    /* Screenshot Message Signals Section */
+    .screenshot-card {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 30px;
+    }
+
+    .screenshot-signals-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .screenshot-signal-item {
+      background: #f8fafc;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .screenshot-signal-item.detected {
+      background: #fff1f2;
+      border-color: #fecdd3;
+    }
+
+    .signal-item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .signal-item-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .signal-item-evidence {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      word-break: break-word;
+    }
+
+    /* Safety Recommendations */
+    .safety-card {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 30px;
+    }
+
+    .safety-card.risk-high { border-left: 4px solid var(--risk-high); }
+    .safety-card.risk-medium { border-left: 4px solid var(--risk-medium); }
+    .safety-card.risk-low { border-left: 4px solid var(--risk-low); }
+
+    .safety-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+
+    .safety-eyebrow.risk-high { color: var(--risk-high); }
+    .safety-eyebrow.risk-medium { color: var(--risk-medium); }
+    .safety-eyebrow.risk-low { color: var(--risk-low); }
+
+    .safety-heading {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .safety-banner {
+      font-size: 0.90rem;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .safety-banner.risk-high { background: var(--risk-high-bg); color: #991b1b; }
+    .safety-banner.risk-medium { background: var(--risk-medium-bg); color: #92400e; }
+    .safety-banner.risk-low { background: var(--risk-low-bg); color: #166534; }
+
+    .safety-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .safety-list-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.90rem;
+      color: var(--text-main);
+      line-height: 1.45;
+    }
+
+    .safety-num-badge {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.74rem;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .safety-num-badge.risk-high { background: var(--risk-high-bg); color: var(--risk-high); border: 1px solid var(--risk-high-border); }
+    .safety-num-badge.risk-medium { background: var(--risk-medium-bg); color: var(--risk-medium); border: 1px solid var(--risk-medium-border); }
+    .safety-num-badge.risk-low { background: var(--risk-low-bg); color: var(--risk-low); border: 1px solid var(--risk-low-border); }
+
+    /* Recheck Verification Card */
+    .recheck-card {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 22px 28px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 30px;
+    }
+
+    .recheck-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .recheck-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--brand);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .recheck-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+
+    .recheck-timestamp {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .btn-recheck {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 0.90rem;
+      font-weight: 700;
+      color: var(--text-main);
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.15s;
+    }
+
+    .btn-recheck:hover:not(:disabled) {
+      background: #f8fafc;
+      border-color: var(--brand);
+      color: var(--brand);
+    }
+
+    .btn-recheck:disabled {
+      background: #f1f5f9;
+      color: var(--text-muted);
+      cursor: not-allowed;
+    }
+
+    /* Recheck Step-by-Step Progress */
+    .recheck-progress-box {
+      margin-top: 16px;
+      padding: 16px 18px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius-md);
+    }
+
+    .recheck-progress-header {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .recheck-steps-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+    }
+
+    .recheck-step {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+    }
+
+    .recheck-step.done {
+      color: #16a34a;
+    }
+
+    .recheck-step.running {
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .verification-updated-banner {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: var(--radius-md);
+      padding: 10px 16px;
+      margin-top: 14px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: #15803d;
+    }
+
+    /* Verification Changes Card */
+    .changes-card {
+      margin-top: 18px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+    }
+
+    .changes-header {
+      margin-bottom: 12px;
+    }
+
+    .changes-title {
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #b45309;
+      display: block;
+    }
+
+    .changes-subtitle {
+      font-size: 0.80rem;
+      color: #92400e;
+    }
+
+    .changes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .change-item {
+      background: #ffffff;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 0.86rem;
+      line-height: 1.4;
+    }
+
+    .change-field {
+      font-weight: 700;
+      color: #92400e;
+    }
+
+    .change-diff {
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    /* Final Bottom Actions */
+    .final-actions-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 13px 22px;
+      background: #ffffff;
+      color: var(--text-secondary);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      font-size: 0.92rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+      background: #f8fafc;
+      color: var(--text-main);
+      border-color: #cbd5e1;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      background: var(--brand);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(13, 148, 136, 0.25);
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary:hover {
+      background: var(--brand-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      padding: 24px;
+      border-top: 1px solid var(--card-border);
+      background: #ffffff;
+    }
+
+    @media (max-width: 640px) {
+      .identity-card-header, .recheck-header-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .identity-grid {
+        grid-template-columns: 1fr;
+      }
+      .risk-panel {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .evidence-details-grid {
+        grid-template-columns: 1fr;
+      }
+      .screenshot-signals-grid {
+        grid-template-columns: 1fr;
+      }
+      .final-actions-bar {
+        flex-direction: column-reverse;
+      }
+      .btn-secondary, .btn-primary, .btn-recheck {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="/" class="brand">
+        <div class="brand-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">FraudJobDetector</span>
+          <span class="brand-subtitle">Corporate Due Diligence & Scam Shield</span>
+        </div>
+      </a>
+    </div>
+  </header>
+
+  <!-- Screen 3: Verification Report -->
+  <main class="main-wrapper">
+    <div class="content-container">
+
+      <!-- Report Header -->
+      <div class="report-header">
+        <div class="report-subtitle">Corporate Identity & Recruitment Due Diligence</div>
+        <h1 class="report-heading">Verification Report</h1>
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 8px;">
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <div class="investigated-company-box">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--brand);">
+                <rect x="4" y="2" width="16" height="20" rx="2"/>
+                <path d="M9 22v-4h6v4"/>
+              </svg>
+              <span id="investigatedCompanyName">Loading Company Details...</span>
+            </div>
+            <div id="verificationIdContainer" style="display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 0.82rem; font-weight: 700; color: var(--text-secondary); background: #f1f5f9; padding: 7px 12px; border-radius: var(--radius-sm); border: 1px solid var(--card-border);">
+              <span>ID:</span>
+              <span id="displayVerificationId">VER-2026-00000</span>
+            </div>
+          </div>
+          <button type="button" id="btnShareReport" onclick="openShareModal()" style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; background: var(--brand); color: #ffffff; border: none; border-radius: var(--radius-sm); font-size: 0.88rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.15s ease; box-shadow: 0 1px 3px rgba(13, 148, 136, 0.2);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            </svg>
+            <span>Share Report</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 1. Verification Result (Risk Panel) -->
+      <section class="risk-panel" id="riskPanel">
+        <div class="risk-panel-left">
+          <div class="risk-badge" id="riskBadge">
+            <span id="riskLevelText">LOW RISK</span>
+          </div>
+          <div class="risk-summary-text" id="riskSummaryText">
+            Evaluating multi-source statutory records and signals...
+          </div>
+        </div>
+        <div class="risk-panel-right">
+          <div class="score-number" id="riskScoreNumber">0</div>
+          <div class="score-label">Risk Score / 100</div>
+        </div>
+      </section>
+
+      <!-- 2. Risk Signals -->
+      <div class="section-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+        <span>Risk Signals</span>
+      </div>
+      <div class="signals-container" id="signalsContainer">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- 3. Company Identity Card -->
+      <section class="identity-card" id="identityCard">
+        <div class="identity-card-header">
+          <div class="identity-card-header-left">
+            <div class="identity-eyebrow">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              Company Identity
+            </div>
+            <h2 class="identity-company-title" id="identityCompanyTitle">Loading Company Details...</h2>
+            <div class="identity-company-subtitle">Statutory corporate verification and registration profile</div>
+          </div>
+          <div class="identity-confidence-panel">
+            <div class="confidence-header-row">
+              <span class="confidence-label">Identity Corroboration</span>
+              <span class="confidence-value" id="identityConfidenceVal">0%</span>
+            </div>
+            <div class="confidence-bar-track">
+              <div class="confidence-bar-fill" id="identityConfidenceBar" style="width: 0%;"></div>
+            </div>
+            <span style="font-size: 0.72rem; color: var(--text-muted);">Cross-Registry Corroboration Score</span>
+          </div>
+        </div>
+
+        <div class="identity-grid">
+          <!-- MCA -->
+          <div class="identity-grid-item">
+            <div class="identity-item-header">
+              <span class="identity-item-label">MCA Status</span>
+              <div class="evidence-status-pill pill-neutral" id="idMcaBadge">—</div>
+            </div>
+            <div class="identity-main-val" id="idMcaMainVal">Not available</div>
+            <div class="identity-sub-val" id="idMcaSubVal">CIN: Not available</div>
+          </div>
+
+          <!-- GST -->
+          <div class="identity-grid-item">
+            <div class="identity-item-header">
+              <span class="identity-item-label">GST Status</span>
+              <div class="evidence-status-pill pill-neutral" id="idGstBadge">—</div>
+            </div>
+            <div class="identity-main-val" id="idGstMainVal">Not provided</div>
+            <div class="identity-sub-val" id="idGstSubVal">GSTIN: Not provided</div>
+          </div>
+
+          <!-- Domain -->
+          <div class="identity-grid-item">
+            <div class="identity-item-header">
+              <span class="identity-item-label">Domain Check</span>
+              <div class="evidence-status-pill pill-neutral" id="idDomainBadge">—</div>
+            </div>
+            <div class="identity-main-val" id="idDomainMainVal">Not provided</div>
+            <div class="identity-sub-val" id="idDomainSubVal">SSL: Unavailable</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Verification Evidence -->
+      <section class="evidence-section">
+        <div class="section-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="16" rx="2"/>
+            <line x1="7" y1="8" x2="17" y2="8"/>
+            <line x1="7" y1="12" x2="17" y2="12"/>
+            <line x1="7" y1="16" x2="13" y2="16"/>
+          </svg>
+          <span>Verification Evidence</span>
+        </div>
+
+        <div class="evidence-grid">
+          <!-- MCA Card -->
+          <div class="evidence-card">
+            <div class="evidence-card-header">
+              <span class="evidence-card-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand);">
+                  <rect x="4" y="2" width="16" height="20" rx="2"/>
+                  <path d="M9 22v-4h6v4"/>
+                </svg>
+                Ministry of Corporate Affairs (MCA)
+              </span>
+              <span class="evidence-status-pill pill-neutral" id="mcaStatusPill">Checking...</span>
+            </div>
+            <div class="evidence-details-grid">
+              <div class="evidence-detail-item">
+                <span class="evidence-label">Registration Status</span>
+                <span class="evidence-value" id="mcaStatusVal">Not available</span>
+              </div>
+              <div class="evidence-detail-item">
+                <span class="evidence-label">CIN</span>
+                <span class="evidence-value evidence-value-mono" id="mcaCinVal">Not available</span>
+              </div>
+              <div class="evidence-detail-item">
+                <span class="evidence-label">Registered Entity Name</span>
+                <span class="evidence-value" id="mcaNameVal">Not available</span>
+              </div>
+              <div class="evidence-detail-item">
+                <span class="evidence-label">Class / Category</span>
+                <span class="evidence-value" id="mcaCategoryVal">Not available</span>
+              </div>
+            </div>
+            <div class="evidence-source-row">
+              <span class="evidence-source-name">Ministry of Corporate Affairs</span>
+              <a href="https://www.mca.gov.in/content/mca/global/en/mca/fo-library/company-master-data.html" target="_blank" rel="noopener noreferrer" class="evidence-source-link">View Source ↗</a>
+            </div>
+          </div>
+
+          <!-- GST Card -->
+          <div class="evidence-card">
+            <div class="evidence-card-header">
+              <span class="evidence-card-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand);">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                </svg>
+                GST Verification
+              </span>
+              <span class="evidence-status-pill pill-neutral" id="gstStatusPill">Checking...</span>
+            </div>
+            <div class="evidence-details-grid">
+              <div class="evidence-detail-item">
+                <span class="evidence-label">GSTIN Status</span>
+                <span class="evidence-value" id="gstStatusVal">Not provided</span>
+              </div>
+              <div class="evidence-detail-item">
+                <span class="evidence-label">GSTIN</span>
+                <span class="evidence-value evidence-value-mono" id="gstVal">Not provided</span>
+              </div>
+              <div class="evidence-detail-item">
+                <span class="evidence-label">Legal Name</span>
+                <span class="evidence-value" id="gstLegalNameVal">Not available</span>
+              </div>
+              <div class="evidence-detail-item">
+                <span class="evidence-label">Taxpayer Type</span>
+                <span class="evidence-value" id="gstTypeVal">Not available</span>
+              </div>
+            </div>
+            <div class="evidence-source-row">
+              <span class="evidence-source-name">GST Taxpayer Verification</span>
+              <a href="https://services.gst.gov.in/services/searchtp" target="_blank" rel="noopener noreferrer" class="evidence-source-link">View Source ↗</a>
+            </div>
+          </div>
+
+          <!-- Domain Card -->
+          <div class="evidence-card">
+            <div class="evidence-card-header">
+              <span class="evidence-card-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand);">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="2" y1="12" x2="22" y2="12"/>
+                </svg>
+                Domain & SSL Verification
+              </span>
+              <span class="evidence-status-pill pill-neutral" id="domainStatusPill">Checking...</span>
+            </div>
+            <div class="evidence-details-grid">
+              <div class="evidence-detail-item">
+                <span class="evidence-label">Claimed Domain</span>
+                <span class="evidence-value evidence-value-mono" id="domainVal">Not provided</span>
+              </div>
+              <div class="evidence-detail-item">
+                <span class="evidence-label">Domain Age</span>
+                <span class="evidence-value" id="domainAgeVal">Not available</span>
+              </div>
+              <div class="evidence-detail-item">
+                <span class="evidence-label">SSL Status</span>
+                <span class="evidence-value" id="sslStatusVal">Not available</span>
+              </div>
+              <div class="evidence-detail-item">
+                <span class="evidence-label">Registrant / TLD Type</span>
+                <span class="evidence-value" id="registrantVal">Not available</span>
+              </div>
+            </div>
+            <div class="evidence-source-row">
+              <span class="evidence-source-name">Domain / WHOIS Verification</span>
+              <span style="font-size: 0.80rem; color: var(--text-muted);">DNS / SSL Handshake</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Offer Letter Consistency (Conditional) -->
+      <section class="consistency-card" id="offerConsistencyCard" style="display: none;">
+        <div class="consistency-card-header">
+          <div class="consistency-eyebrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+            Document Cross-Referencing
+          </div>
+          <h2 class="consistency-heading">Offer Letter Consistency</h2>
+          <p class="consistency-subtitle">Cross-referencing claims from the offer document against statutory registries and corporate records.</p>
+        </div>
+        <div class="consistency-table-wrapper">
+          <table class="consistency-table">
+            <thead>
+              <tr>
+                <th>Verification Field</th>
+                <th>Status</th>
+                <th>Offer Claim</th>
+                <th>Registry Corroboration</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody id="offerConsistencyBody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 6. Screenshot / Message Analysis (Conditional) -->
+      <section class="screenshot-card" id="screenshotAnalysisCard" style="display: none;">
+        <div class="consistency-card-header">
+          <div class="consistency-eyebrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+            </svg>
+            Screenshot & Message Forensics
+          </div>
+          <h2 class="consistency-heading">Message Analysis</h2>
+          <p class="consistency-subtitle">AI scan of communication tone, recruitment urgency, and suspicious demands.</p>
+        </div>
+        <div class="screenshot-signals-grid" id="screenshotSignalsGrid">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- 7. Safety Recommendations -->
+      <section class="safety-card" id="safetyCard">
+        <div class="safety-eyebrow" id="safetyEyebrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <span id="safetyEyebrowText">Safety Guidance</span>
+        </div>
+        <h2 class="safety-heading" id="safetyHeading">
+          🛡️ What should you do?
+        </h2>
+        <div class="safety-banner" id="safetyBanner">
+          Before proceeding, independently verify the employer and recruitment opportunity.
+        </div>
+        <ol class="safety-list" id="safetyList">
+          <!-- Populated dynamically -->
+        </ol>
+      </section>
+
+      <!-- 8. Recheck Verification -->
+      <section class="recheck-card" id="recheckCard">
+        <div class="recheck-header-row">
+          <div>
+            <span class="recheck-eyebrow">Live Registry Query</span>
+            <h3 class="recheck-title">Recheck Verification</h3>
+            <div class="recheck-timestamp" id="recheckTimestamp">Last verified: Loading...</div>
+          </div>
+          <button type="button" class="btn-recheck" id="btnRecheck" onclick="triggerRecheck()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M23 4v6h-6"/>
+              <path d="M1 20v-6h6"/>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+            </svg>
+            <span>Recheck Verification</span>
+          </button>
+        </div>
+
+        <!-- Recheck Step-by-Step Progress Panel / ImageGenerationLoader -->
+        <div class="recheck-progress-box" id="recheckProgressBox" style="display: none; padding: 0; background: transparent; border: none;">
+          <div class="image-gen-loader-container" id="imageGenLoaderContainer" style="position: relative; width: 100%; border-radius: 16px; overflow: hidden; background: #0B1120; border: 1px solid rgba(6, 182, 212, 0.25); box-shadow: 0 12px 48px rgba(2, 6, 23, 0.7), 0 0 24px rgba(6, 182, 212, 0.12); padding: 40px 24px; min-height: 280px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; margin: 16px 0;">
+            <canvas id="imageGenCanvas" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;" aria-hidden="true"></canvas>
+            
+            <!-- Corner Accents -->
+            <div style="position: absolute; top: 12px; left: 12px; width: 12px; height: 12px; border-top: 2px solid rgba(6, 182, 212, 0.6); border-left: 2px solid rgba(6, 182, 212, 0.6);"></div>
+            <div style="position: absolute; top: 12px; right: 12px; width: 12px; height: 12px; border-top: 2px solid rgba(6, 182, 212, 0.6); border-right: 2px solid rgba(6, 182, 212, 0.6);"></div>
+            <div style="position: absolute; bottom: 12px; left: 12px; width: 12px; height: 12px; border-bottom: 2px solid rgba(6, 182, 212, 0.6); border-left: 2px solid rgba(6, 182, 212, 0.6);"></div>
+            <div style="position: absolute; bottom: 12px; right: 12px; width: 12px; height: 12px; border-bottom: 2px solid rgba(6, 182, 212, 0.6); border-right: 2px solid rgba(6, 182, 212, 0.6);"></div>
+
+            <div style="position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 12px;">
+              <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(8, 47, 73, 0.6); border: 1px solid rgba(6, 182, 212, 0.4); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 24px rgba(6, 182, 212, 0.3);">
+                <span style="font-size: 24px;">🛡️</span>
+              </div>
+              <h3 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; margin: 0; text-shadow: 0 2px 10px rgba(6, 182, 212, 0.4);">
+                Analyzing Job Offer
+              </h3>
+              <div style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 9999px; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(6, 182, 212, 0.3); font-size: 0.78rem; color: #cbd5e1; font-weight: 600;">
+                <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #06b6d4; box-shadow: 0 0 8px #06b6d4;"></span>
+                <span id="recheckStatusMsg">Checking company registration...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Verification Updated Banner -->
+        <div class="verification-updated-banner" id="verificationUpdatedBanner" style="display: none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <span id="verificationUpdatedText">Verification updated</span>
+        </div>
+
+        <!-- Verification Changes Card (only shown when actual values differ) -->
+        <div class="changes-card" id="verificationChangesCard" style="display: none;">
+          <div class="changes-header">
+            <span class="changes-title">VERIFICATION CHANGES</span>
+            <span class="changes-subtitle">Updates detected since the previous verification query</span>
+          </div>
+          <div class="changes-list" id="verificationChangesList">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Bottom Actions -->
+      <div class="final-actions-bar">
+        <a href="/review" class="btn-secondary">
+          ← Review Details
+        </a>
+        <button type="button" class="btn-primary" onclick="startNewVerification()">
+          Start New Verification
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Share Report Modal -->
+  <div id="shareModal" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+    <div style="background: #ffffff; width: 100%; max-width: 520px; border-radius: 14px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2); border: 1px solid #e2e8f0; overflow: hidden;">
+      <div style="padding: 18px 22px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 32px; height: 32px; border-radius: 6px; background: #f0fdfa; color: #0d9488; display: flex; align-items: center; justify-content: center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            </svg>
+          </div>
+          <div>
+            <h3 style="font-size: 1.05rem; font-weight: 800; color: #0f172a;">Share Verification Report</h3>
+            <p style="font-size: 0.76rem; color: #64748b; font-weight: 500;">Secure, sanitized link valid for 7 days</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeShareModal()" style="background: none; border: none; font-size: 1.4rem; color: #94a3b8; cursor: pointer; line-height: 1;">&times;</button>
+      </div>
+
+      <div style="padding: 22px;">
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-size: 0.78rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px;">
+            Public Share Link
+          </label>
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="shareUrlInput" readonly style="flex: 1; padding: 10px 12px; font-family: var(--font-mono); font-size: 0.82rem; border: 1px solid #cbd5e1; border-radius: 8px; background: #f8fafc; color: #0f172a;" />
+            <button type="button" id="btnCopyShareLink" onclick="copyShareLink()" style="padding: 10px 16px; background: #0d9488; color: #ffffff; border: none; border-radius: 8px; font-weight: 700; font-size: 0.86rem; cursor: pointer; white-space: nowrap; transition: all 0.15s ease;">
+              Copy Link
+            </button>
+          </div>
+        </div>
+
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px 14px; margin-bottom: 18px; display: flex; gap: 10px; align-items: flex-start;">
+          <span style="font-size: 1.1rem;">🛡️</span>
+          <div style="font-size: 0.8rem; color: #166534; line-height: 1.45;">
+            <strong>Privacy Protected:</strong> All candidate credentials, phone numbers, uploaded documents, and private messages are automatically stripped. Only vetted corporate registry data and risk findings are shared.
+          </div>
+        </div>
+
+        <div style="font-size: 0.78rem; color: #64748b; margin-bottom: 18px; display: flex; align-items: center; gap: 6px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>This link automatically expires in <strong>7 days</strong>.</span>
+        </div>
+
+        <div style="border-top: 1px solid #f1f5f9; padding-top: 16px; display: flex; justify-content: space-between; align-items: center;">
+          <button type="button" id="btnRevokeLink" onclick="revokeShareReport()" style="background: none; border: 1px solid #fecaca; color: #dc2626; padding: 7px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer;">
+            Revoke Link Now
+          </button>
+          <button type="button" onclick="closeShareModal()" style="background: #e2e8f0; border: none; color: #334155; padding: 7px 16px; border-radius: 6px; font-size: 0.84rem; font-weight: 700; cursor: pointer;">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    FraudJobDetector • Independent Corporate Identity & Recruitment Due Diligence Engine
+  </footer>
+
+  <script>
+    const RECHECK_URL = "/recheck-company";
+    let currentResult = null;
+
+    window.addEventListener("DOMContentLoaded", async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get("token") || urlParams.get("import_token");
+
+      if (token) {
+        try {
+          const resp = await fetch(`/api/report/${encodeURIComponent(token)}`);
+          if (resp.ok) {
+            const reportData = await resp.json();
+            currentResult = reportData;
+            sessionStorage.setItem("fjd_verification_results", JSON.stringify(reportData));
+            renderReport(reportData);
+            return;
+          }
+        } catch (err) {
+          console.warn("Could not load report by token", err);
+        }
+      }
+
+      const stored = sessionStorage.getItem("fjd_verification_results");
+      if (!stored) {
+        window.location.href = "/";
+        return;
+      }
+
+      try {
+        currentResult = JSON.parse(stored);
+        renderReport(currentResult);
+      } catch (e) {
+        console.error("Failed to parse verification results", e);
+        window.location.href = "/";
+      }
+    });
+
+    function renderReport(data) {
+      currentResult = data;
+
+      // Display Verification ID
+      const verId = data.verification_id || "VER-2026-00000";
+      const verIdEl = document.getElementById("displayVerificationId");
+      if (verIdEl) verIdEl.textContent = verId;
+
+      // 1. Company Name Header
+      const compName = data.company_identity?.company_name || data.investigated_company || "Company";
+      document.getElementById("investigatedCompanyName").textContent = compName;
+      document.getElementById("identityCompanyTitle").textContent = compName;
+
+      // 2. Risk Panel
+      const score = data.risk_score !== undefined ? data.risk_score : 0;
+      const level = (data.risk_level || "low").toLowerCase();
+      
+      const riskScoreNumber = document.getElementById("riskScoreNumber");
+      const riskBadge = document.getElementById("riskBadge");
+      const riskLevelText = document.getElementById("riskLevelText");
+      const riskSummaryText = document.getElementById("riskSummaryText");
+
+      riskScoreNumber.textContent = score;
+      riskBadge.className = "risk-badge " + level;
+
+      if (level === "low") {
+        riskLevelText.textContent = "LOW RISK";
+        riskScoreNumber.style.color = "var(--risk-low)";
+        riskSummaryText.textContent = "No critical fraud signals detected. The credentials corroborate with active official registries.";
+      } else if (level === "medium") {
+        riskLevelText.textContent = "MEDIUM RISK";
+        riskScoreNumber.style.color = "var(--risk-medium)";
+        riskSummaryText.textContent = "Multiple verification signals require caution. Verify official corporate contact details independently.";
+      } else {
+        riskLevelText.textContent = "HIGH RISK";
+        riskScoreNumber.style.color = "var(--risk-high)";
+        riskSummaryText.textContent = "Critical fraud signals detected. Strong likelihood of recruitment impersonation or fee scam.";
+      }
+
+      // 3. Identity Confidence
+      const identity = data.company_identity || {};
+      const confVal = Math.round(identity.confidence_score || (level === "low" ? 85 : (level === "medium" ? 45 : 20)));
+      document.getElementById("identityConfidenceVal").textContent = `${confVal}%`;
+      document.getElementById("identityConfidenceBar").style.width = `${confVal}%`;
+
+      // MCA Identity Item
+      const mca = data.mca || data.mca_result || {};
+      const mcaStatus = mca.status || "Not Available";
+      document.getElementById("idMcaMainVal").textContent = mca.company_name || "No MCA Record";
+      document.getElementById("idMcaSubVal").textContent = mca.cin ? `CIN: ${mca.cin}` : "CIN: Not available";
+      const idMcaBadge = document.getElementById("idMcaBadge");
+      if (mcaStatus.toLowerCase() === "active") {
+        idMcaBadge.textContent = "✓ Active";
+        idMcaBadge.className = "evidence-status-pill pill-green";
+      } else if (mcaStatus.toLowerCase().includes("strike")) {
+        idMcaBadge.textContent = "✕ Strike Off";
+        idMcaBadge.className = "evidence-status-pill pill-red";
+      } else {
+        idMcaBadge.textContent = mcaStatus;
+        idMcaBadge.className = "evidence-status-pill pill-neutral";
+      }
+
+      // GST Identity Item
+      const gst = data.gst || data.gst_result || {};
+      const gstStatus = gst.status || (gst.gstin ? "Active" : "Not Provided");
+      document.getElementById("idGstMainVal").textContent = gst.legal_name || (gst.gstin ? "GSTIN Provided" : "Not provided");
+      document.getElementById("idGstSubVal").textContent = gst.gstin ? `GSTIN: ${gst.gstin}` : "GSTIN: Not provided";
+      const idGstBadge = document.getElementById("idGstBadge");
+      if (gstStatus.toLowerCase() === "active" || gstStatus.toLowerCase() === "verified") {
+        idGstBadge.textContent = "✓ Active";
+        idGstBadge.className = "evidence-status-pill pill-green";
+      } else if (gst.gstin) {
+        idGstBadge.textContent = gstStatus;
+        idGstBadge.className = "evidence-status-pill pill-amber";
+      } else {
+        idGstBadge.textContent = "— Not Provided";
+        idGstBadge.className = "evidence-status-pill pill-neutral";
+      }
+
+      // Domain Identity Item
+      const domain = data.domain || data.domain_result || {};
+      const domStatus = domain.status || (domain.domain ? "Verified" : "Not Provided");
+      document.getElementById("idDomainMainVal").textContent = domain.domain || "Not provided";
+      document.getElementById("idDomainSubVal").textContent = domain.ssl_status ? `SSL: ${domain.ssl_status}` : "SSL: Unavailable";
+      const idDomainBadge = document.getElementById("idDomainBadge");
+      if (domStatus.toLowerCase() === "verified") {
+        idDomainBadge.textContent = "✓ Verified";
+        idDomainBadge.className = "evidence-status-pill pill-green";
+      } else if (domain.domain) {
+        idDomainBadge.textContent = domStatus;
+        idDomainBadge.className = "evidence-status-pill pill-amber";
+      } else {
+        idDomainBadge.textContent = "— Not Provided";
+        idDomainBadge.className = "evidence-status-pill pill-neutral";
+      }
+
+      // Evidence Values
+      document.getElementById("mcaStatusPill").textContent = mcaStatus;
+      document.getElementById("mcaStatusPill").className = "evidence-status-pill " + (mcaStatus.toLowerCase() === "active" ? "pill-green" : (mcaStatus.toLowerCase().includes("strike") ? "pill-red" : "pill-neutral"));
+      document.getElementById("mcaStatusVal").textContent = mcaStatus;
+      document.getElementById("mcaCinVal").textContent = mca.cin || "Not available";
+      document.getElementById("mcaNameVal").textContent = mca.company_name || "Not available";
+      document.getElementById("mcaCategoryVal").textContent = mca.company_category || mca.class_of_company || "Company limited by Shares";
+
+      document.getElementById("gstStatusPill").textContent = gstStatus;
+      document.getElementById("gstStatusPill").className = "evidence-status-pill " + (gstStatus.toLowerCase() === "active" ? "pill-green" : "pill-neutral");
+      document.getElementById("gstStatusVal").textContent = gstStatus;
+      document.getElementById("gstVal").textContent = gst.gstin || "Not provided";
+      document.getElementById("gstLegalNameVal").textContent = gst.legal_name || "Not available";
+      document.getElementById("gstTypeVal").textContent = gst.taxpayer_type || "Regular";
+
+      document.getElementById("domainStatusPill").textContent = domStatus;
+      document.getElementById("domainStatusPill").className = "evidence-status-pill " + (domStatus.toLowerCase() === "verified" ? "pill-green" : "pill-neutral");
+      document.getElementById("domainVal").textContent = domain.domain || "Not provided";
+      document.getElementById("domainAgeVal").textContent = domain.domain_age_days ? `${domain.domain_age_days} days` : "Not available";
+      document.getElementById("sslStatusVal").textContent = domain.ssl_status || "Unavailable";
+      document.getElementById("registrantVal").textContent = domain.registrant || domain.tld_type || "Standard TLD";
+
+      // 4. Risk Signals
+      renderRiskSignals(data);
+
+      // 5. Offer Letter Consistency (if available)
+      renderOfferConsistency(data);
+
+      // 6. Screenshot Analysis (if available)
+      renderScreenshotAnalysis();
+
+      // 7. Safety Recommendations
+      renderSafetyRecommendations(data);
+
+      // 8. Recheck Section
+      const ts = data.verified_at || new Date().toLocaleString();
+      document.getElementById("recheckTimestamp").textContent = `Last verified: ${ts}`;
+    }
+
+    function renderRiskSignals(data) {
+      const container = document.getElementById("signalsContainer");
+      container.innerHTML = "";
+
+      const rules = Array.isArray(data.triggered_rules) ? data.triggered_rules : [];
+
+      if (rules.length === 0) {
+        const cleanCard = document.createElement("div");
+        cleanCard.className = "signal-card clean";
+        cleanCard.innerHTML = `
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--risk-low)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <div class="signal-content">
+            <div class="signal-title" style="color: var(--risk-low);">No Negative Risk Signals Detected</div>
+            <div class="signal-desc">All evaluated statutory registrations and domain parameters conform to standard legitimate business criteria.</div>
+          </div>
+        `;
+        container.appendChild(cleanCard);
+        return;
+      }
+
+      rules.forEach(rule => {
+        const card = document.createElement("div");
+        card.className = "signal-card flagged";
+
+        const weightVal = rule.weight !== undefined ? rule.weight : (rule.score !== undefined ? rule.score : 15);
+        const weight = weightVal > 0 ? `+${weightVal}` : `${weightVal}`;
+        const title = formatRuleTitle(rule.rule || "Risk Signal");
+
+        card.innerHTML = `
+          <div class="signal-score-badge">${weight}</div>
+          <div class="signal-content">
+            <div class="signal-title">${escapeHtml(title)}</div>
+            <div class="signal-desc">${escapeHtml(rule.explanation || rule.reason || "High risk indicator identified during verification.")}</div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function formatRuleTitle(ruleKey) {
+      const titles = {
+        mca_struck_off: "MCA Entity Struck Off / Inactive",
+        company_name_mismatch: "Company Name Discrepancy",
+        major_company_impersonation: "Possible Major Company Impersonation",
+        suspicious_lookalike_domain: "Lookalike / Impersonation Domain",
+        suspicious_or_free_tld: "Suspicious Domain Extension",
+        ssl_unavailable_or_invalid: "SSL Security Verification Failed",
+        upfront_payment_demanded: "Upfront Payment or Deposit Demanded",
+        urgency_pressure_tactics: "Urgency and Pressure Tactics",
+        sensitive_documents_requested: "Sensitive Documents or Credentials Demanded",
+        personal_email_contact: "Personal / Free Email Recruiter Contact",
+      };
+      if (titles[ruleKey]) return titles[ruleKey];
+      return ruleKey.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    }
+
+    function renderOfferConsistency(data) {
+      const card = document.getElementById("offerConsistencyCard");
+      const tbody = document.getElementById("offerConsistencyBody");
+      const consistencyItems = data.offer_letter_consistency || [];
+
+      if (!consistencyItems || consistencyItems.length === 0) {
+        card.style.display = "none";
+        return;
+      }
+
+      card.style.display = "block";
+      tbody.innerHTML = "";
+
+      consistencyItems.forEach(item => {
+        const tr = document.createElement("tr");
+
+        let badgeClass = "status-badge-unverified";
+        if (item.status.includes("Match")) {
+          badgeClass = "status-badge-match";
+        } else if (item.status.includes("Mismatch") || item.status.includes("Not Found")) {
+          badgeClass = "status-badge-mismatch";
+        } else if (item.status.includes("Extracted")) {
+          badgeClass = "status-badge-extracted";
+        } else if (item.status.includes("Not Detected")) {
+          badgeClass = "status-badge-not-detected";
+        }
+
+        tr.innerHTML = `
+          <td style="font-weight: 700; color: var(--text-main);">${escapeHtml(item.field)}</td>
+          <td><span class="${badgeClass}">${escapeHtml(item.status)}</span></td>
+          <td style="font-family: var(--font-mono); font-size: 0.84rem;">${escapeHtml(item.offer_value || "—")}</td>
+          <td style="color: var(--text-secondary);">${escapeHtml(item.registry_value || "—")}</td>
+          <td style="font-size: 0.82rem; color: var(--text-muted);">${escapeHtml(item.details || "")}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderScreenshotAnalysis() {
+      const card = document.getElementById("screenshotAnalysisCard");
+      const grid = document.getElementById("screenshotSignalsGrid");
+      const inputSource = sessionStorage.getItem("fjd_input_source");
+      const storedSignals = sessionStorage.getItem("fjd_screenshot_signals");
+
+      if (inputSource !== "screenshot" && !storedSignals) {
+        card.style.display = "none";
+        return;
+      }
+
+      let signals = [];
+      try {
+        signals = storedSignals ? JSON.parse(storedSignals) : [];
+      } catch (e) { signals = []; }
+
+      if (signals.length === 0) {
+        card.style.display = "none";
+        return;
+      }
+
+      card.style.display = "block";
+      grid.innerHTML = "";
+
+      signals.forEach(sig => {
+        const item = document.createElement("div");
+        item.className = "screenshot-signal-item" + (sig.detected ? " detected" : "");
+
+        const statusTag = sig.detected
+          ? `<span class="evidence-status-pill pill-red">⚠ Detected</span>`
+          : `<span class="evidence-status-pill pill-green">✓ Clean</span>`;
+
+        item.innerHTML = `
+          <div class="signal-item-header">
+            <span class="signal-item-name">${escapeHtml(sig.name || sig.rule)}</span>
+            ${statusTag}
+          </div>
+          <div class="signal-item-evidence">${escapeHtml(sig.evidence || "No indicators detected")}</div>
+          <div style="font-size: 0.78rem; color: var(--text-muted);">${escapeHtml(sig.description || "")}</div>
+        `;
+        grid.appendChild(item);
+      });
+    }
+
+    function renderSafetyRecommendations(data) {
+      const card = document.getElementById("safetyCard");
+      const eyebrow = document.getElementById("safetyEyebrow");
+      const eyebrowText = document.getElementById("safetyEyebrowText");
+      const banner = document.getElementById("safetyBanner");
+      const list = document.getElementById("safetyList");
+      const heading = document.getElementById("safetyHeading");
+
+      if (!card || !list) return;
+
+      const level = (data.risk_level || "low").toLowerCase();
+      let recommendations = Array.isArray(data.safety_recommendations) ? [...data.safety_recommendations] : [];
+
+      if (recommendations.length === 0) {
+        if (level === "low") {
+          recommendations = [
+            "Verify the employer using its official website.",
+            "Confirm the recruiter's identity independently.",
+            "Do not pay unexpected recruitment or internship fees.",
+            "Avoid sharing sensitive personal or financial information until verification is complete.",
+            "Be cautious with links and documents received from unknown recruiters."
+          ];
+        } else {
+          recommendations = [
+            "Independently verify the employer using its official corporate website.",
+            "Confirm the recruiter's identity independently through company directory.",
+            "Do not pay requested registration or training fees under any circumstances.",
+            "Never share bank credentials, OTPs, or UPI PINs.",
+            "Contact official company channels to report suspicious recruitment."
+          ];
+        }
+      }
+
+      card.className = "safety-card risk-" + level;
+      eyebrow.className = "safety-eyebrow risk-" + level;
+      banner.className = "safety-banner risk-" + level;
+
+      if (level === "high") {
+        eyebrowText.textContent = "High Risk Warning • Precautionary Action Required";
+        heading.innerHTML = `🛡️ What should you do?`;
+        banner.textContent = "Before proceeding, independently verify the employer and recruitment opportunity.";
+      } else if (level === "medium") {
+        eyebrowText.textContent = "Proceed with caution";
+        heading.innerHTML = `🛡️ What should you do?`;
+        banner.textContent = "Proceed with caution. Multiple verification signals require careful scrutiny before proceeding.";
+      } else {
+        eyebrowText.textContent = "Basic verification completed";
+        heading.innerHTML = `🛡️ What should you do?`;
+        banner.textContent = "Although no major risk signals were detected, continue to verify recruitment communications through official company channels.";
+      }
+
+      list.innerHTML = "";
+      recommendations.forEach((rec, idx) => {
+        const li = document.createElement("li");
+        li.className = "safety-list-item";
+        if (typeof rec === "object" && rec !== null) {
+          const recTitle = rec.title || rec.type || "Recommendation";
+          const recMsg = rec.message || "";
+          const recPriority = rec.priority || "medium";
+          const priorityBadge = recPriority === "high"
+            ? `<span style="font-size: 0.68rem; font-weight: 800; background: #fee2e2; color: #b91c1c; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; margin-left: 6px;">High Priority</span>`
+            : "";
+          li.innerHTML = `
+            <span class="safety-num-badge risk-${level}">${idx + 1}</span>
+            <div style="display: flex; flex-direction: column; gap: 2px;">
+              <span style="font-weight: 700; color: var(--text-main); font-size: 0.92rem;">
+                ${escapeHtml(recTitle)}${priorityBadge}
+              </span>
+              <span style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.45;">
+                ${escapeHtml(recMsg)}
+              </span>
+            </div>
+          `;
+        } else {
+          li.innerHTML = `
+            <span class="safety-num-badge risk-${level}">${idx + 1}</span>
+            <span>${escapeHtml(rec)}</span>
+          `;
+        }
+        list.appendChild(li);
+      });
+    }
+
+    async function triggerRecheck() {
+      const btn = document.getElementById("btnRecheck");
+      const progressBox = document.getElementById("recheckProgressBox");
+      const updatedBanner = document.getElementById("verificationUpdatedBanner");
+      const changesCard = document.getElementById("verificationChangesCard");
+      const changesList = document.getElementById("verificationChangesList");
+
+      btn.disabled = true;
+      progressBox.style.display = "block";
+      updatedBanner.style.display = "none";
+      changesCard.style.display = "none";
+
+      // Start Aceternity UI Canvas Animation
+      let animFrameId = null;
+      let msgIntervalId = null;
+      const loaderCanvas = document.getElementById("imageGenCanvas");
+      const loaderContainer = document.getElementById("imageGenLoaderContainer");
+      const statusMsgEl = document.getElementById("recheckStatusMsg");
+
+      const subMessages = [
+        "Checking company registration...",
+        "Inspecting domain signals...",
+        "Evaluating risk indicators...",
+        "Preparing verification report..."
+      ];
+      let msgIdx = 0;
+      if (statusMsgEl) {
+        statusMsgEl.textContent = subMessages[0];
+        msgIntervalId = setInterval(() => {
+          msgIdx = (msgIdx + 1) % subMessages.length;
+          statusMsgEl.textContent = subMessages[msgIdx];
+        }, 1200);
+      }
+
+      if (loaderCanvas && loaderContainer) {
+        const ctx = loaderCanvas.getContext("2d");
+        const rect = loaderContainer.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        loaderCanvas.width = Math.floor(rect.width * dpr);
+        loaderCanvas.height = Math.floor(rect.height * dpr);
+        loaderCanvas.style.width = rect.width + "px";
+        loaderCanvas.style.height = rect.height + "px";
+        ctx.scale(dpr, dpr);
+
+        const cellSize = 3;
+        const gap = 1;
+        const bandHeight = 48;
+        const duration = 2400;
+        let startTime = null;
+
+        function renderCanvas(time) {
+          if (!startTime) startTime = time;
+          const elapsed = time - startTime;
+          const w = rect.width;
+          const h = rect.height;
+
+          ctx.clearRect(0, 0, w, h);
+          const bgGrad = ctx.createLinearGradient(0, 0, w, h);
+          bgGrad.addColorStop(0, "rgba(11, 17, 32, 0.95)");
+          bgGrad.addColorStop(1, "rgba(15, 23, 42, 0.98)");
+          ctx.fillStyle = bgGrad;
+          ctx.fillRect(0, 0, w, h);
+
+          const step = cellSize + gap;
+          const cols = Math.floor(w / step);
+          const rows = Math.floor(h / step);
+          const offsetX = (w - (cols * step - gap)) / 2;
+          const offsetY = (h - (rows * step - gap)) / 2;
+
+          const t = (elapsed % duration) / duration;
+          const eased = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+          const scanY = -bandHeight + eased * (h + bandHeight * 2);
+
+          for (let r = 0; r < rows; r++) {
+            const cy = offsetY + r * step;
+            const dist = Math.abs(cy - scanY);
+            const inBand = dist < bandHeight;
+
+            for (let c = 0; c < cols; c++) {
+              const cx = offsetX + c * step;
+              let size = cellSize;
+              let rVal = 30, gVal = 64, bVal = 175, alpha = 0.12;
+
+              if (inBand) {
+                const intensity = 1 - dist / bandHeight;
+                const wave = Math.sin(c * 0.25 + elapsed * 0.005);
+                const waveWeight = Math.max(0, (wave + 1) * 0.5);
+                size = cellSize * (1 + waveWeight * intensity * 0.75);
+                const mix = waveWeight * intensity;
+                rVal = Math.round(30 + (6 - 30) * mix);
+                gVal = Math.round(64 + (182 - 64) * mix);
+                bVal = Math.round(175 + (212 - 175) * mix);
+                alpha = 0.35 + intensity * 0.65;
+              }
+
+              ctx.fillStyle = `rgba(${rVal}, ${gVal}, ${bVal}, ${alpha})`;
+              ctx.beginPath();
+              ctx.rect(cx - (size - cellSize) / 2, cy - (size - cellSize) / 2, size, size);
+              ctx.fill();
+            }
+          }
+
+          if (scanY > -bandHeight && scanY < h + bandHeight) {
+            ctx.fillStyle = "rgba(6, 182, 212, 0.65)";
+            ctx.fillRect(0, scanY, w, 1.5);
+          }
+
+          animFrameId = requestAnimationFrame(renderCanvas);
+        }
+        animFrameId = requestAnimationFrame(renderCanvas);
+      }
+
+      function stopLoader() {
+        if (animFrameId) cancelAnimationFrame(animFrameId);
+        if (msgIntervalId) clearInterval(msgIntervalId);
+        progressBox.style.display = "none";
+        btn.disabled = false;
+      }
+
+      // Prepare Recheck Payload
+      const storedEdited = sessionStorage.getItem("fjd_edited_entities");
+      let editedData = {};
+      try { editedData = storedEdited ? JSON.parse(storedEdited) : {}; } catch (e) {}
+
+      const compName = editedData.company_name || currentResult?.company_identity?.company_name || "Company";
+      const domain = editedData.claimed_domain || currentResult?.domain?.domain || null;
+      const gstin = editedData.gstin || currentResult?.gst?.gstin || null;
+      const email = editedData.contact_email || null;
+      const rawText = sessionStorage.getItem("fjd_raw_message") || null;
+      const storedOffer = sessionStorage.getItem("fjd_offer_letter_data");
+      let offerData = null;
+      try { offerData = storedOffer ? JSON.parse(storedOffer) : null; } catch (e) {}
+
+      const payload = {
+        company_name: compName,
+        claimed_domain: domain,
+        gstin: gstin,
+        contact_email: email,
+        job_message: rawText,
+        description: rawText,
+        offer_data: offerData,
+        previous_result: currentResult,
+        input_source: "recheck"
+      };
+
+      try {
+        const res = await fetch(RECHECK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          throw new Error(`Recheck failed with HTTP ${res.status}`);
+        }
+
+        const freshData = await res.json();
+        sessionStorage.setItem("fjd_verification_results", JSON.stringify(freshData));
+
+        setTimeout(() => {
+          stopLoader();
+          renderReport(freshData);
+
+          // Show updated banner
+          const ts = freshData.verified_at || new Date().toLocaleString();
+          document.getElementById("verificationUpdatedText").textContent = `Verification updated • Checked: ${ts}`;
+          updatedBanner.style.display = "flex";
+
+          // Show changes card if changes detected
+          const changes = freshData.verification_changes || [];
+          if (changes.length > 0) {
+            changesList.innerHTML = "";
+            changes.forEach(ch => {
+              const div = document.createElement("div");
+              div.className = "change-item";
+              div.innerHTML = `
+                <div class="change-field">${escapeHtml(ch.field)}: Changed from <em>${escapeHtml(ch.previous)}</em> to <strong>${escapeHtml(ch.current)}</strong></div>
+                <div class="change-diff">${escapeHtml(ch.message)}</div>
+              `;
+              changesList.appendChild(div);
+            });
+            changesCard.style.display = "block";
+          }
+        }, 500);
+
+      } catch (err) {
+        stopLoader();
+        alert("Recheck error: " + err.message);
+      }
+    }
+
+    function startNewVerification() {
+      sessionStorage.clear();
+      window.location.href = "/";
+    }
+
+    let activeShareToken = null;
+    let activeRevokeToken = null;
+
+    async function openShareModal() {
+      const modal = document.getElementById("shareModal");
+      const input = document.getElementById("shareUrlInput");
+      const copyBtn = document.getElementById("btnCopyShareLink");
+      copyBtn.textContent = "Copy Link";
+      copyBtn.style.background = "var(--brand)";
+
+      if (!currentResult) {
+        alert("No verification report findings available to share.");
+        return;
+      }
+
+      modal.style.display = "flex";
+      input.value = "Generating secure share link...";
+
+      try {
+        const resp = await fetch("/create-share-report", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            verification_id: currentResult.verification_id,
+            report_data: currentResult,
+          }),
+        });
+
+        if (!resp.ok) {
+          throw new Error("Failed to generate share link.");
+        }
+
+        const data = await resp.json();
+        activeShareToken = data.report_token;
+        activeRevokeToken = data.revoke_token;
+        const fullShareUrl = `${window.location.origin}${data.share_url}`;
+        input.value = fullShareUrl;
+      } catch (err) {
+        input.value = "Error generating share link: " + err.message;
+      }
+    }
+
+    function closeShareModal() {
+      const modal = document.getElementById("shareModal");
+      if (modal) modal.style.display = "none";
+    }
+
+    async function copyShareLink() {
+      const input = document.getElementById("shareUrlInput");
+      const copyBtn = document.getElementById("btnCopyShareLink");
+      if (!input || !input.value) return;
+
+      try {
+        await navigator.clipboard.writeText(input.value);
+        copyBtn.textContent = "✓ Link copied.";
+        copyBtn.style.background = "#16a34a";
+        setTimeout(() => {
+          copyBtn.textContent = "Copy Link";
+          copyBtn.style.background = "var(--brand)";
+        }, 3000);
+      } catch (e) {
+        input.select();
+        document.execCommand("copy");
+        copyBtn.textContent = "✓ Link copied.";
+        copyBtn.style.background = "#16a34a";
+      }
+    }
+
+    async function revokeShareReport() {
+      if (!activeShareToken) return;
+      if (!confirm("Are you sure you want to permanently revoke this public report link? It will immediately stop working.")) return;
+
+      try {
+        const resp = await fetch(`/report/${encodeURIComponent(activeShareToken)}/revoke`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ revoke_token: activeRevokeToken }),
+        });
+
+        if (resp.ok) {
+          alert("Verification report link has been permanently revoked.");
+          closeShareModal();
+          activeShareToken = null;
+          activeRevokeToken = null;
+        } else {
+          alert("Could not revoke report link.");
+        }
+      } catch (err) {
+        alert("Revoke failed: " + err.message);
+      }
+    }
+
+    function escapeHtml(text) {
+      if (!text) return "";
+      const div = document.createElement("div");
+      div.textContent = String(text);
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>
