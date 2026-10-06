@@ -11,7 +11,10 @@ import secrets
 import sqlite3
 from typing import Any, Dict, Optional, Tuple
 
-DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "reports.db")
+if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
+    DB_PATH = "/tmp/reports.db"
+else:
+    DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "reports.db")
 
 
 def get_db_connection(db_path: Optional[str] = None) -> sqlite3.Connection:

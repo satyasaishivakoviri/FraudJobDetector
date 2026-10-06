@@ -1,0 +1,58 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/check-company",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/recheck-company",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/extract-entities",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/extract-job-info",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/upload/:match*",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/upload-offer-letter",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/analyze-screenshot",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/create-share-report",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/report/:match*",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/api/:match*",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/extension/:match*",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/health",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/((?!api|check-company|recheck-company|extract-entities|extract-job-info|upload|upload-offer-letter|analyze-screenshot|create-share-report|report|extension|health).*)",
+      "destination": "/index.html"
+    }
+  ]
+}
