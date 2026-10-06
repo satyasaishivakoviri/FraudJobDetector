@@ -11,15 +11,33 @@ import secrets
 import sqlite3
 from typing import Any, Dict, Optional, Tuple
 
-if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
-    DB_PATH = "/tmp/reports.db"
-else:
-    DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "reports.db")
+def _get_default_db_path() -> str:
+    # Always prefer /tmp in serverless or cloud environments (Vercel, AWS Lambda, etc.)
+    if any(k in os.environ for k in ("VERCEL", "VERCEL_ENV", "AWS_LAMBDA_FUNCTION_NAME", "LAMBDA_TASK_ROOT")):
+        return "/tmp/reports.db"
+
+    local_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "reports.db")
+    try:
+        os.makedirs(os.path.dirname(local_path), exist_ok=True)
+        # Test write permission
+        test_file = os.path.join(os.path.dirname(local_path), ".perm_check")
+        with open(test_file, "w") as f:
+            f.write("1")
+        os.remove(test_file)
+        return local_path
+    except (OSError, IOError, PermissionError):
+        return "/tmp/reports.db"
+
+
+DB_PATH = _get_default_db_path()
 
 
 def get_db_connection(db_path: Optional[str] = None) -> sqlite3.Connection:
-    target_path = db_path or DB_PATH
-    os.makedirs(os.path.dirname(target_path), exist_ok=True)
+    target_path = db_path or _get_default_db_path()
+    try:
+        os.makedirs(os.path.dirname(target_path), exist_ok=True)
+    except (OSError, IOError, PermissionError):
+        target_path = "/tmp/reports.db"
     conn = sqlite3.connect(target_path)
     conn.row_factory = sqlite3.Row
     return conn

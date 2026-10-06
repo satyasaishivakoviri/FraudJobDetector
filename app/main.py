@@ -42,8 +42,11 @@ from app.verifiers.udyam import lookup_udyam
 # Load environment variables
 load_dotenv()
 
-# Initialize SQLite database for reports
-init_db()
+# Initialize SQLite database for reports (deferred gracefully if filesystem is constrained)
+try:
+    init_db()
+except Exception as _e:
+    pass
 
 app = FastAPI(
     title="Fraud Job Detector API",
